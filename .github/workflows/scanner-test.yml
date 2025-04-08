@@ -1,11 +1,11 @@
 # This workflow is for scanning this repo for malware
 name: malware-scanner
 
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+# on:
+#   push:
+#     branches: [main]
+#   pull_request:
+#     branches: [main]
 
 jobs:
   malware_security_scan:

@@ -26,7 +26,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
         run: |
+          # Need to retrieve the next milestone.
+          MILESTONE=v1.14.0
+
           git clone https://${GITHUB_TOKEN}@github.com/falfaroc/change-log.git
           cd change-log
 
           make build
+
+          sed -i "s/milestone: \(.*\)*/milestone: \"$MILESTONE\"/g" config.yaml
+          ./bin/change-log > changelog.md
+
+          cat changelog.md

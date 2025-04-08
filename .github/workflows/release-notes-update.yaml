@@ -6,8 +6,9 @@
 #
 #  http://www.apache.org/licenses/LICENSE-2.0
 
+
 on:
-  workflow_call:
+  workflow_dispatch:
 
 jobs:
   release-notes-update:

@@ -42,7 +42,9 @@ jobs:
             elif [[ $name == "csi-node-driver-registrar" ]]; then
               echo "registrar=$version" >> "$GITHUB_OUTPUT"
             elif [[ $name == "csi-external-health-monitor-controller" ]]; then
-              echo "health_monitor=$version" >> "$GITHUB_OUTPUT"              
+              echo "health_monitor=$version" >> "$GITHUB_OUTPUT"
+            elif [[ $name == "csm-version" ]]; then
+              echo "csm=$version" >> "$GITHUB_OUTPUT"
             fi
 
           done
@@ -58,6 +60,7 @@ jobs:
           resizer: ${{ steps.vars.outputs.resizer }}
           registrar: ${{ steps.vars.outputs.registrar }}
           health_monitor: ${{ steps.vars.outputs.health_monitor }}
+          csm: ${{ steps.vars.outputs.csm }}
         run: |
           echo "We are updating csm docs..."
 
@@ -69,7 +72,7 @@ jobs:
           sidecars[csi-node-driver-registrar]=$registrar
           sidecars[csi-external-health-monitor-controller]=$health_monitor
 
-          update_sidecars_shortcodes() {
+          update_shortcodes_sidecars() {
             for key in "${!sidecars[@]}"; do
               path="layouts/shortcodes/version-docs.html"
               name=$(echo $key | tr '-' '_')
@@ -91,7 +94,36 @@ jobs:
             done
           }
 
-          update_sidecars_shortcodes
+          update_installation_wizard_sidecars() {
+            csm_version=$csm
+
+            # wizard_files=$(find content/docs/getting-started/installation/installationwizard/src/templates/ -name "*$version*")
+            wizard_files=$(find content/docs/getting-started/installation/installationwizard/src/templates/ -name "*1.14.0*")
+
+            if [ -z "$wizard_files" ]; then
+              echo "No Installation Wizard content for latest CSM found. Skipping."
+              return
+            fi
+
+            for file in $wizard_files; do
+              echo "File: $file"
+              for key in "${!sidecars[@]}"; do
+                old_version=$(grep -r -m 1 "$key:" $file | xargs)
+                if [ -z "$old_version" ]; then
+                  continue
+                fi
+
+                new_version=$(echo $old_version | sed "s/:v[^\"]*/:${sidecars[$key]}/")
+
+                echo "Updating $key to $new_version"
+                sed -i "s|${old_version}|${new_version}|g" $file
+              done
+              echo ""
+            done
+          }
+
+          update_shortcodes_sidecars
+          update_installation_wizard_sidecars
 
       - name: Remove versions content file
         run: rm versions-content.txt

@@ -75,7 +75,6 @@ jobs:
               name=$(echo $key | tr '-' '_')
               version=${sidecars[$key]}
               
-              ls
               echo "Updating $key to $version"
 
               shortcode_location=$(grep -r "\"$name.*\" -}}" $path)
@@ -84,6 +83,8 @@ jobs:
 
               sed -i "s/${substring}/${partial}$version/g" $path
             done
+
+            git status
           }
 
           update_sidecars_shortcodes

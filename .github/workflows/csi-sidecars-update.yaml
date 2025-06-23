@@ -90,7 +90,7 @@ jobs:
               sed -i "s/${substring}/${partial}$version/g" $path
             done
 
-            git status
+            cat $GITHUB_WORKSPACE/layouts/shortcodes/version-docs.html
           }
 
           update_sidecars_shortcodes

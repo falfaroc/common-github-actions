@@ -28,20 +28,21 @@ jobs:
           readarray -t lines < versions-content.txt
           for line in "${lines[@]}"; do
             name=$(echo $line | cut -d: -f1)
-            echo $name
+            version=$(echo $line | cut -d: -f2 | tr -d ' ')
+            echo $name:$version
 
             if [[ $name == "csi-attacher" ]]; then
-              echo "csi-attacher=$(echo $line | cut -d: -f2 | tr -d ' ')" >> $GITHUB_OUTPUT
+              echo "csi-attacher=$(echo $line | cut -d: -f2 | tr -d ' ')" >> "$GITHUB_OUTPUT"
             elif [[ $name == "csi-provisioner" ]]; then
-              echo "csi-provisioner=$(echo $line | cut -d: -f2 | tr -d ' ')" >> $GITHUB_OUTPUT
+              echo "csi-provisioner=$(echo $line | cut -d: -f2 | tr -d ' ')" >> "$GITHUB_OUTPUT"
             elif [[ $name == "csi-snapshotter" ]]; then
-              echo "csi-snapshotter=$(echo $line | cut -d: -f2 | tr -d ' ')" >> $GITHUB_OUTPUT
+              echo "csi-snapshotter=$(echo $line | cut -d: -f2 | tr -d ' ')" >> "$GITHUB_OUTPUT"
             elif [[ $name == "csi-resizer" ]]; then
-              echo "csi-resizer=$(echo $line | cut -d: -f2 | tr -d ' ')" >> $GITHUB_OUTPUT
+              echo "csi-resizer=$(echo $line | cut -d: -f2 | tr -d ' ')" >> "$GITHUB_OUTPUT"
             elif [[ $name == "csi-node-driver-registrar" ]]; then
-              echo "csi-node-driver-registrar=$(echo $line | cut -d: -f2 | tr -d ' ')" >> $GITHUB_OUTPUT
+              echo "csi-node-driver-registrar=$(echo $line | cut -d: -f2 | tr -d ' ')" >> "$GITHUB_OUTPUT"
             elif [[ $name == "csi-external-health-monitor-controller" ]]; then
-              echo "csi-external-health-monitor-controller=$(echo $line | cut -d: -f2 | tr -d ' ')" >> $GITHUB_OUTPUT              
+              echo "csi-external-health-monitor-controller=$(echo $line | cut -d: -f2 | tr -d ' ')" >> "$GITHUB_OUTPUT"              
             fi
 
           done

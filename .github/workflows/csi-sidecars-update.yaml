@@ -33,17 +33,17 @@ jobs:
             echo $name:$version
 
             if [[ $name == "csi-attacher" ]]; then
-              echo "csi-attacher=$version" >> "$GITHUB_OUTPUT"
+              echo "attacher=$version" >> "$GITHUB_OUTPUT"
             elif [[ $name == "csi-provisioner" ]]; then
-              echo "csi-provisioner=$version" >> "$GITHUB_OUTPUT"
+              echo "provisioner=$version" >> "$GITHUB_OUTPUT"
             elif [[ $name == "csi-snapshotter" ]]; then
-              echo "csi-snapshotter=$version" >> "$GITHUB_OUTPUT"
+              echo "snapshotter=$version" >> "$GITHUB_OUTPUT"
             elif [[ $name == "csi-resizer" ]]; then
-              echo "csi-resizer=$version" >> "$GITHUB_OUTPUT"
+              echo "resizer=$version" >> "$GITHUB_OUTPUT"
             elif [[ $name == "csi-node-driver-registrar" ]]; then
-              echo "csi-node-driver-registrar=$version" >> "$GITHUB_OUTPUT"
+              echo "registrar=$version" >> "$GITHUB_OUTPUT"
             elif [[ $name == "csi-external-health-monitor-controller" ]]; then
-              echo "csi-external-health-monitor-controller=$version" >> "$GITHUB_OUTPUT"              
+              echo "health_monitor=$version" >> "$GITHUB_OUTPUT"              
             fi
 
           done
@@ -53,15 +53,15 @@ jobs:
         # if: ${{ github.repository == 'dell/csm-docs' }}
         if: ${{ github.repository == 'falfaroc/csm-docs' }}
         env:
-          csi-attacher: ${{ steps.vars.outputs.csi-attacher }}
-          csi-provisioner: ${{ steps.vars.outputs.csi-provisioner }}
-          csi-snapshotter: ${{ steps.vars.outputs.csi-snapshotter }}
-          csi-resizer: ${{ steps.vars.outputs.csi-resizer }}
-          csi-node-driver-registrar: ${{ steps.vars.outputs.csi-node-driver-registrar }}
-          csi-external-health-monitor-controller: ${{ steps.vars.outputs.csi-external-health-monitor-controller }}
+          attacher: ${{ steps.vars.outputs.attacher }}
+          provisioner: ${{ steps.vars.outputs.provisioner }}
+          snapshotter: ${{ steps.vars.outputs.snapshotter }}
+          resizer: ${{ steps.vars.outputs.resizer }}
+          registrar: ${{ steps.vars.outputs.registrar }}
+          health_monitor: ${{ steps.vars.outputs.health_monitor }}
         run: |
           echo "We are updating csm docs..."
-          echo "csi-attacher version is ${csi-attacher}"
+          echo "csi-attacher version is $attacher"
 
       # # Needed for signing commits using Github App tokens
       # # See: https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md#commit-signing

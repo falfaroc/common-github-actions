@@ -50,9 +50,16 @@ jobs:
         # # Uncomment when going into csm-docs.
         # if: ${{ github.repository == 'dell/csm-docs' }}
         if: ${{ github.repository == 'falfaroc/csm-docs' }}
+        env:
+          csi-attacher: ${{ steps.vars.outputs.csi-attacher }}
+          csi-provisioner: ${{ steps.vars.outputs.csi-provisioner }}
+          csi-snapshotter: ${{ steps.vars.outputs.csi-snapshotter }}
+          csi-resizer: ${{ steps.vars.outputs.csi-resizer }}
+          csi-node-driver-registrar: ${{ steps.vars.outputs.csi-node-driver-registrar }}
+          csi-external-health-monitor-controller: ${{ steps.vars.outputs.csi-external-health-monitor-controller }}
         run: |
           echo "We are updating csm docs..."
-          echo "csi-attacher version is ${{ steps.vars.outputs.csi-provisioner }}"
+          echo "csi-attacher version is ${csi-attacher}"
 
       # # Needed for signing commits using Github App tokens
       # # See: https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md#commit-signing

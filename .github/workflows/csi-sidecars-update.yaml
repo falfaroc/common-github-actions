@@ -75,6 +75,7 @@ jobs:
               name=$(echo $key | tr '-' '_')
               version=${sidecars[$key]}
               
+              ls
               echo "Updating $key to $version"
 
               shortcode_location=$(grep -r "\"$name.*\" -}}" $path)

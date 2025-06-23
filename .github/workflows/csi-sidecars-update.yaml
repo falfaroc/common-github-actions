@@ -93,6 +93,9 @@ jobs:
 
           update_sidecars_shortcodes
 
+      - name: Remove versions content file
+        run: rm versions-content.txt
+
       # # Needed for signing commits using Github App tokens
       # # See: https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md#commit-signing
       # - name: Generate GitHub App Token

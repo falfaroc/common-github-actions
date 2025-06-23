@@ -77,10 +77,16 @@ jobs:
               
               echo "Updating $key to $version"
 
+              echo "$(grep -r "\"$name.*\" -}}" $path)"
               shortcode_location=$(grep -r "\"$name.*\" -}}" $path)
+
+              echo "Substring: $shortcode_location"
               substring=$(echo $shortcode_location | cut -d: -f1)
+
+              echo "Partial: $substring"
               partial=$(echo "$substring" | sed -E 's/v[0-9]+\.[0-9]+\.[0-9]+//g')
 
+              echo "Full: $partial$version"
               sed -i "s/${substring}/${partial}$version/g" $path
             done
 

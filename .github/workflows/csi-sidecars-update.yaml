@@ -72,14 +72,16 @@ jobs:
           update_sidecars_shortcodes() {
             for key in "${!sidecars[@]}"; do
               path="layouts/shortcodes/version-docs.html"
-              key=$(echo $1 | tr '-' '_')
+              key=$(echo $key | tr '-' '_')
               version=${sidecars[$key]}
+              
+              echo "Updating $key to $version"
 
               shortcode_location=$(grep -r "\"$key.*\" -}}" $path)
               substring=$(echo $shortcode_location | cut -d: -f1)
               partial=$(echo "$substring" | sed -E 's/v[0-9]+\.[0-9]+\.[0-9]+//g')
 
-              sed -i "s/${substring}/${partial}$2/g" $path
+              sed -i "s/${substring}/${partial}$version/g" $path
             done
           }
 

@@ -80,17 +80,14 @@ jobs:
               
               echo "Updating $key to $version"
 
-              echo "$(grep -r "\"$name.*\" -}}" $path)"
-              shortcode_location=$(grep -r "\"$name.*\" -}}" $path)
+              # Get the shortcode location for sidecar
+              sidecar_shortcode=$(grep -r "\"$name.*\" -}}" $path)
 
-              echo "Substring: $shortcode_location"
-              substring=$(echo $shortcode_location | cut -d: -f1)
+              # Remove the version from the shortcode
+              partial_shortcode=$(echo "$sidecar_shortcode" | sed -E 's/v[0-9]+\.[0-9]+\.[0-9]+//g')
 
-              echo "Partial: $substring"
-              partial=$(echo "$substring" | sed -E 's/v[0-9]+\.[0-9]+\.[0-9]+//g')
-
-              echo "Full: $partial$version"
-              sed -i "s/${substring}/${partial}$version/g" $path
+              # Replace the version in the shortcode
+              sed -i "s/${sidecar_shortcode}/${partial_shortcode}$version/g" $path
             done
           }
 
@@ -106,19 +103,20 @@ jobs:
             fi
 
             for file in $wizard_files; do
-              echo "File: $file"
+              echo "Replaceing Sidecars in $file"
               for key in "${!sidecars[@]}"; do
+                # Retrieve the current version from the file of the sidecar.
                 old_version=$(grep -r -m 1 "$key:" $file | xargs)
                 if [ -z "$old_version" ]; then
                   continue
                 fi
 
+                # Replace the old version with the new version.
                 new_version=$(echo $old_version | sed "s/:v[^\"]*/:${sidecars[$key]}/")
 
-                echo "Updating $key to $new_version"
+                # Update the version in the file.
                 sed -i "s|${old_version}|${new_version}|g" $file
               done
-              echo ""
             done
           }
 

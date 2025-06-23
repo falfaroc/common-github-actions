@@ -30,7 +30,6 @@ jobs:
           for line in "${lines[@]}"; do
             name=$(echo $line | cut -d: -f1 | tr -d ' ')
             version=$(echo $line | cut -d: -f2 | tr -d ' ')
-            echo $name:$version
 
             if [[ $name == "csi-attacher" ]]; then
               echo "attacher=$version" >> "$GITHUB_OUTPUT"
@@ -61,7 +60,22 @@ jobs:
           health_monitor: ${{ steps.vars.outputs.health_monitor }}
         run: |
           echo "We are updating csm docs..."
-          echo "csi-attacher version is $attacher"
+
+          declare -A sidecars
+          sidecars[csi-attacher]=$attacher
+          sidecars[csi-provisioner]=$provisioner
+          sidecars[csi-snapshotter]=$snapshotter
+          sidecars[csi-resizer]=$resizer
+          sidecars[csi-node-driver-registrar]=$registrar
+          sidecars[csi-external-health-monitor-controller]=$health_monitor
+
+          update_sidecars_shortcodes() {
+            for key in "${!sidecars[@]}"; do
+              echo "Updating $key to ${sidecars[$key]}"
+            done
+          }
+
+          update_sidecars_shortcodes
 
       # # Needed for signing commits using Github App tokens
       # # See: https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md#commit-signing

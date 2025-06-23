@@ -25,8 +25,12 @@ jobs:
           curl -s https://raw.githubusercontent.com/falfaroc/csm/refs/heads/update-csi-sidecars/config/csm-versions.yaml > versions-content
 
       - name: CSM docs sidecar update
-        run: | 
-          echo "This is specifically for ${{ github.repository }}"
+        # # Uncomment when going into csm-docs.
+        # if: ${{ github.repository == 'dell/csm-docs' }}
+        if: ${{ github.repository == 'falfaroc/csm-docs' }}
+        run: |
+          echo "We are updating csm docs..."
+          cat versions-content
 
       # # Needed for signing commits using Github App tokens
       # # See: https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md#commit-signing

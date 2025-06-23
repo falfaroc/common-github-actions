@@ -93,14 +93,14 @@ jobs:
 
           update_sidecars_shortcodes
 
-      # Needed for signing commits using Github App tokens
-      # See: https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md#commit-signing
-      - name: Generate GitHub App Token
-        uses: actions/create-github-app-token@v2.0.6
-        id: generate-token
-        with:
-          # app-id: ${{ vars.CSM_RELEASE_APP_ID }}
-          private-key: ${{ secrets.MY_GITHUB_TOKEN }}
+      # # Needed for signing commits using Github App tokens
+      # # See: https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md#commit-signing
+      # - name: Generate GitHub App Token
+      #   uses: actions/create-github-app-token@v2.0.6
+      #   id: generate-token
+      #   with:
+      #     # app-id: ${{ vars.CSM_RELEASE_APP_ID }}
+      #     private-key: ${{ secrets.MY_GITHUB_TOKEN }}
 
       # Must enable "allow GitHub Actions to create pull requests" setting
       # Author defaults to the user who triggered the workflow run

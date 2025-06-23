@@ -22,7 +22,27 @@ jobs:
 
       - name: Get Latest CSI Sidecar Versions from dell/csm
         run: |
-          curl -s https://raw.githubusercontent.com/falfaroc/csm/refs/heads/update-csi-sidecars/config/csm-versions.yaml > versions-content
+          curl -s https://raw.githubusercontent.com/falfaroc/csm/refs/heads/update-csi-sidecars/config/csm-versions.yaml > versions-content.txt
+
+          # Parse out and save each csi sidecar version
+          for line in $(cat versions-content.txt); do
+            name=$(echo $line | cut -d: -f1)
+
+            if [[ $name == "csi-attacher" ]]; then
+              echo "csi-attacher=$(echo $line | cut -d: -f2 | tr -d ' ')" >> $GITHUB_OUTPUT
+            elif [[ $name == "csi-provisioner" ]]; then
+              echo "csi-provisioner=$(echo $line | cut -d: -f2 | tr -d ' ')" >> $GITHUB_OUTPUT
+            elif [[ $name == "csi-snapshotter" ]]; then
+              echo "csi-snapshotter=$(echo $line | cut -d: -f2 | tr -d ' ')" >> $GITHUB_OUTPUT
+            elif [[ $name == "csi-resizer" ]]; then
+              echo "csi-resizer=$(echo $line | cut -d: -f2 | tr -d ' ')" >> $GITHUB_OUTPUT
+            elif [[ $name == "csi-node-driver-registrar" ]]; then
+              echo "csi-node-driver-registrar=$(echo $line | cut -d: -f2 | tr -d ' ')" >> $GITHUB_OUTPUT
+            elif [[ $name == "csi-external-health-monitor-controller" ]]; then
+              echo "csi-external-health-monitor-controller=$(echo $line | cut -d: -f2 | tr -d ' ')" >> $GITHUB_OUTPUT              
+            fi
+
+          done
 
       - name: CSM docs sidecar update
         # # Uncomment when going into csm-docs.
@@ -30,7 +50,7 @@ jobs:
         if: ${{ github.repository == 'falfaroc/csm-docs' }}
         run: |
           echo "We are updating csm docs..."
-          cat versions-content
+          echo "csi-attacher version is ${{ steps.vars.outputs.csi-provisioner }}"
 
       # # Needed for signing commits using Github App tokens
       # # See: https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md#commit-signing

@@ -25,8 +25,10 @@ jobs:
           curl -s https://raw.githubusercontent.com/falfaroc/csm/refs/heads/update-csi-sidecars/config/csm-versions.yaml > versions-content.txt
 
           # Parse out and save each csi sidecar version
-          for line in $(cat versions-content.txt); do
+          readarray -t lines < versions-content
+          for line in "${lines[@]}"; do
             name=$(echo $line | cut -d: -f1)
+            echo $name
 
             if [[ $name == "csi-attacher" ]]; then
               echo "csi-attacher=$(echo $line | cut -d: -f2 | tr -d ' ')" >> $GITHUB_OUTPUT

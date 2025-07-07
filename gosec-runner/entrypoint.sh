@@ -10,6 +10,7 @@
 
 DIRECTORIES=$1
 EXCLUDES=$2
+TOKEN=$3
 
 if [ -n "$EXCLUDES" ]
 then
@@ -39,8 +40,15 @@ get_exclude_directories() {
     EXCLUDE_DIR_FLAG="$exclude_arg"
 }
 
+echo "Running gosec on all submodules"
+echo "GIT_TOKEN: $TOKEN"
+
 # Fetch the latest version of gosec
 LATEST_VERSION=$(curl -s https://api.github.com/repos/securego/gosec/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+if [ -z "$LATEST_VERSION" ]; then
+  echo "Failed to get latest version of gosec"
+  exit 1
+fi
 
 curl -sfL https://raw.githubusercontent.com/securego/gosec/master/install.sh | sh -s -- -b $(go env GOPATH)/bin $LATEST_VERSION
 

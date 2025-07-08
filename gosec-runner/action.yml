@@ -24,7 +24,6 @@ runs:
   args:
     - ${{ inputs.directories }}
     - ${{ inputs.excludes }}
-    - ${{ secrets.GITHUB_TOKEN }}
 
 branding:
   icon: 'shield'

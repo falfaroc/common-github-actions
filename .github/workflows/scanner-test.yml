@@ -2,10 +2,7 @@
 name: malware-scanner
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
 
 jobs:
   malware_security_scan:

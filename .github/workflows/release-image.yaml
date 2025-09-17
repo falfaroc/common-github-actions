@@ -53,7 +53,7 @@ jobs:
               new_version="${version_parts[0]}.${version_parts[1]}.${version_parts[2]}"
             fi
 
-            SHA=$(curl -s --location --request GET https://quay.io/api/v1/repository/$REPOSITORY/$image/tag?specificTag=nightly --header 'Content-Type: application/json' --header 'Authorization: Bearer ${{ secrets.QUAY_API_TOKEN }}' | jq -r '.tags[0].manifest_digest')
+            # SHA=$(curl -s --location --request GET https://quay.io/api/v1/repository/$REPOSITORY/$image/tag?specificTag=nightly --header 'Content-Type: application/json' --header 'Authorization: Bearer ${{ secrets.QUAY_API_TOKEN }}' | jq -r '.tags[0].manifest_digest')
             echo "Pushing image: $image:$new_version"
 
             # curl --location --request PUT https://quay.io/api/v1/repository/$REPOSITORY/$image/tag/$new_version \
